@@ -8,12 +8,12 @@ function initializeVariable(name, value){
     }
 }
 
-function initializeForLoop(x, iterations){
+function initializeForLoop(iterations){
 
     if (typeof iterations == 'string'){
-        return ("'for " + x + " in " + (iterations-1) + "'\n");
+        return ("'for i in " + (iterations-1) + "'\n");
     }else{
-        return ("'for " + x + " in range (" + (iterations-1) + "): \n'");
+        return ("'for i in range (" + (iterations-1) + "): \n'");
     }
 }
 

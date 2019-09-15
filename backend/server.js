@@ -22,7 +22,7 @@ const server = http.createServer((req, res) => {
     let sentence = createFunction(result.name, result.param1, result.param2);
 
   } else if (result.intent == "ForLoop") {
-    let sentence = initializeForLoop(result.x, result.interations);
+    let sentence = initializeForLoop(result.interations);
 
   } else if (result.intent == "IfStatement") {
     let sentence = createIfStatement(result.x, result.condition, result.y);
