@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Button, Icon } from 'semantic-ui-react';
-import { ReactMic } from 'react-mic';
+import { ReactMic } from '@cleandersonlobo/react-mic';
 import AceEditor from 'react-ace';
 
 import "brace/mode/python";
@@ -36,12 +36,14 @@ class App extends Component {
 
     sendData(blob) {
         var fd = new FormData();
-        fd.append('file', blob);
+        fd.append('file', blob.blob, 'bitchass1.wav');
         console.log(fd);
 
-        fetch('http://localhost:8000/', {
-            headers: { Accept: "application/x-www-form-urlencoded", 'Access-Control-Allow-Origin': '*' },
+        fetch('http://localhost:8000/upload', {
+            headers: { Accept: "form-data", 'Access-Control-Allow-Origin': '*' },
             method: "POST", body: fd
+        }).then(response => {
+            console.log(response);
         });
     }
 
