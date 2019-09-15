@@ -29,6 +29,7 @@ class App extends Component {
             record: false,
         });
         if (recordedBlob.blob) {
+            console.log(recordedBlob);
             this.sendData(recordedBlob);
         }
     }
@@ -38,8 +39,8 @@ class App extends Component {
         fd.append('file', blob);
         console.log(fd);
 
-        fetch('http://localhost:8000' + '/upload', {
-            headers: { Accept: "application/json" },
+        fetch('http://localhost:8000/', {
+            headers: { Accept: "application/x-www-form-urlencoded", 'Access-Control-Allow-Origin': '*' },
             method: "POST", body: fd
         });
     }

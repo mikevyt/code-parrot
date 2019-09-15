@@ -6,7 +6,7 @@ var fs = require("fs");
 
 const SpeechToText = {
 
-    uploadFile(fileName) {
+    uploadFile(fileName, cb) {
         // replace with your own subscription key,
         // service region (e.g., "westus"), and
         // the name of the file you want to run
@@ -43,7 +43,7 @@ const SpeechToText = {
         recognizer.recognizeOnceAsync(
             function (result) {
                 console.log(result);
-
+                cb(result.privText);
                 recognizer.close();
                 recognizer = undefined;
             },

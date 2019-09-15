@@ -1,10 +1,14 @@
 const express = require('express')
 const app = express();
+var cors = require('cors');
 const SpeechToText = require('./APIManager')
 
-app.get('/', (req, res) => {
-  SpeechToText.uploadFile("bitchass2.wav")
-  res.send('Hello World!')
+app.use(cors());
+
+app.post('/upload', (req, res) => {
+  const text = SpeechToText.uploadFile("bitchass2.wav", (text) => {
+    res.send(text);
+  });
 });
 
 app.listen(8000, () => {
