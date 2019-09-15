@@ -14,7 +14,10 @@ class App extends Component {
         this.state = {
             record: false,
             audioBlob: null,
-            fileNum: 0
+            fileNum: 0,
+            code: '',
+            text: '',
+            tabs: 0,
         }
 
         this.startRecording = this.startRecording.bind(this);
@@ -36,23 +39,35 @@ class App extends Component {
     }
 
     sendData(blob) {
-        const { fileNum } = this.state;
-        console.log(fileNum)
+        const { fileNum, text } = this.state;
         var fd = new FormData();
         fd.append('file', blob.blob, `${fileNum}.wav`);
-        console.log(fd);
 
         fetch('http://localhost:8000/upload', {
             headers: { Accept: "form-data", 'Access-Control-Allow-Origin': '*' },
             method: "POST", body: fd
         }).then(response => {
-            console.log(response);
+            response.json().then(data => {
+                this.handleNewLine(data.line)
+                this.setState({text: text + data.text + '\n'})
+            });
             this.setState({ fileNum: fileNum + 1})
         });
     }
 
+    handleNewLine (newLine) {
+        const { code, tabs } = this.state;
+        if (newLine.split(' ')[0] === 'def' || newLine.split(' ')[0] === 'if') {
+            this.setState({ tabs: tabs + 1 });
+        } else if (newLine === '\n') {
+            this.setState({ tabs: tabs - 1 });
+        }
+        let newCode = code + '\t'.repeat(tabs) + newLine + '\n'
+        this.setState({ code: newCode});
+    }
+
     render () {
-        const { record } =  this.state;
+        const { record, code, text } =  this.state;
 
         return (
             <div className="App">
@@ -87,19 +102,13 @@ class App extends Component {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column width={8}>
-                            Hello
-                            {/* <AceEditor 
-                                mode="python"
-                                theme="github"
-                                value={'for i in range(10):\n\tdong'}
-                                style={{height: '95vh'}}
-                            /> */}
+                            {text}
                         </Grid.Column>
                         <Grid.Column width={8}>
                             <AceEditor 
                                 mode="python"
                                 theme="github"
-                                value={'for i in range(10):\n\tdong'}
+                                value={code}
                                 style={{height: '95vh', width: 'auto'}}
                             />
                         </Grid.Column>

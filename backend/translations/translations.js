@@ -25,7 +25,7 @@ module.exports = {
   },
 
   createFunction: function (name, param1, param2) {
-    return ("def " + name + "(" + param1 + ", " + param2 + ")\n");
+    return ("def " + name + "(" + param1 + ", " + param2 + "):\n");
   },
 
   printSomething: function (sentence) {
