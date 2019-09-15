@@ -16,38 +16,43 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         uploadLocation,
         Buffer.from(new Uint8Array(req.file.buffer))
     ); // write the blob to the server as a file
-    console.log('file wrote');
+    var interpretedString;
 
     apiManager = new SpeechToText();
     const text = apiManager.uploadFile(req.file.originalname, text => {
-        res.send(text);
+        interpretedString = text;
     });
+
+    const codeConverter = new CodeConverter();
+    result = codeConverter.parseKeywordsFromString(interpretedString);
+
+    let sentence;
+    if (result.intent == "End") {
+        sentence = "\n";
+
+    } else if (result.intent == "MakeFunction") {
+        sentence = translations.createFunction(result.name, result.param1, result.param2);
+
+    } else if (result.intent == "ForLoop") {
+        sentence = translations.initializeForLoop(result.interations);
+
+    } else if (result.intent == "IfStatement") {
+        sentence = translations.createIfStatement(result.x, result.condition, result.y);
+
+    } else if (result.intent == "CallFunction") {
+        sentence = translations.callFunction(result.funcName, result.arg1, result.arg2);
+
+    } else if (result.intent == "InitializeVariable") {
+        sentence = translations.initializeVariable(result.name, result.value);
+
+    } else {  //intent == PrintText
+        sentence = translations.printSomething(result.sentence);
+    }
+
+    res.send(sentence);
+
+
 });
-
-const codeConverter = new CodeConverter();
-  result = codeConverter.parseKeywordsFromString();
-
-  if (result.intent == "End") {
-    let sentence = "\n";
-
-  } else if (result.intent == "MakeFunction") {
-    let sentence = translations.createFunction(result.name, result.param1, result.param2);
-
-  } else if (result.intent == "ForLoop") {
-    let sentence = translations.initializeForLoop(result.interations);
-
-  } else if (result.intent == "IfStatement") {
-    let sentence = translations.createIfStatement(result.x, result.condition, result.y);
-
-  } else if (result.intent == "CallFunction") {
-    let sentence = translations.callFunction(result.funcName, result.arg1, result.arg2);
-
-  } else if (result.intent == "InitializeVariable") {
-    let sentence = translations.initializeVariable(result.name, result.value);
-
-  } else {  //intent == PrintText
-    let sentence = translations.printSomething(result.sentence);
-  }
 
 app.listen(8000, () => {
     console.log('Example app listening on port 8000!');
