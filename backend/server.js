@@ -6,6 +6,7 @@ const SpeechToText = require('./APIManager');
 const multer = require('multer'); //use multer to upload blob data
 const upload = multer(); // set multer to be the upload variable (just like express, see above ( include it, then use it/set it up))
 const CodeConverter = require("./CodeConverter");
+const translations = require("./translations/translations");
 
 app.use(cors());
 
@@ -30,24 +31,23 @@ const codeConverter = new CodeConverter();
     let sentence = "\n";
 
   } else if (result.intent == "MakeFunction") {
-    let sentence = createFunction(result.name, result.param1, result.param2);
+    let sentence = translations.createFunction(result.name, result.param1, result.param2);
 
   } else if (result.intent == "ForLoop") {
-    let sentence = initializeForLoop(result.interations);
+    let sentence = translations.initializeForLoop(result.interations);
 
   } else if (result.intent == "IfStatement") {
-    let sentence = createIfStatement(result.x, result.condition, result.y);
+    let sentence = translations.createIfStatement(result.x, result.condition, result.y);
 
   } else if (result.intent == "CallFunction") {
-    let sentence = callFunction(result.funcName, result.arg1, result.arg2);
+    let sentence = translations.callFunction(result.funcName, result.arg1, result.arg2);
 
   } else if (result.intent == "InitializeVariable") {
-    let sentence = initializeVariable(result.name, result.value);
+    let sentence = translations.initializeVariable(result.name, result.value);
 
   } else {  //intent == PrintText
-    let sentence = printSomething(result.sentence);
+    let sentence = translations.printSomething(result.sentence);
   }
-});
 
 app.listen(8000, () => {
     console.log('Example app listening on port 8000!');
