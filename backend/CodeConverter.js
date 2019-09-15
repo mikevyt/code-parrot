@@ -22,7 +22,7 @@ class CodeConverter {
         data.entities.forEach(entityObj => {
           switch (entityObj.type) {
             case "variable":
-              result.name = entityObj.entity ? entityObj.entity : "";
+              result.name = entityObj.entity ? entityObj.entity.replace(" ", "") : "";
               break;
             case "builtin.number":
               result.value = entityObj.entity ? entityObj.entity : "0";
@@ -54,10 +54,10 @@ class CodeConverter {
               }
               break;
             case "firstVar":
-              result.x = entityObj.entity ? entityObj.entity : "";
+              result.x = entityObj.entity ? entityObj.entity.replace(" ", "") : "";
               break;
             case "secondVar":
-              result.y = entityObj.entity ? entityObj.entity : "";
+              result.y = entityObj.entity ? entityObj.entity.replace(" ", "") : "";
               break;
           }
         });
@@ -71,9 +71,9 @@ class CodeConverter {
               break;
             case "parameter":
               if (i == 0) {
-                result.param1 = entityObj.entity ? entityObj.entity : "";
+                result.param1 = entityObj.entity ? entityObj.entity.replace(" ", "") : "";
               } else {
-                result.param2 = entityObj.entity ? entityObj.entity : "";
+                result.param2 = entityObj.entity ? entityObj.entity.replace(" ", "") : "";
               }
               i++;
           }
@@ -91,9 +91,9 @@ class CodeConverter {
               break;
             case "parameter":
               if (x == 0) {
-                result.arg1 = entityObj.entity ? entityObj.entity : "";
+                result.arg1 = entityObj.entity ? entityObj.entity.replace(" ", "") : "";
               } else {
-                result.arg2 = entityObj.entity ? entityObj.entity : "";
+                result.arg2 = entityObj.entity ? entityObj.entity.replace(" ", "") : "";
               }
               x++;
               break;
