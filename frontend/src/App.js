@@ -57,7 +57,7 @@ class App extends Component {
 
     handleNewLine (newLine) {
         const { code, tabs } = this.state;
-        if (newLine.split(' ')[0] === 'def' || newLine.split(' ')[0] === 'if' || newLine.split(' ')[0] === 'for') {
+        if (newLine && (newLine.split(' ')[0] === 'def' || newLine.split(' ')[0] === 'if' || newLine.split(' ')[0] === 'for')) {
             this.setState({ tabs: tabs + 1 });
         } else if (newLine === '\n') {
             this.setState({ tabs: tabs - 1 });
@@ -76,7 +76,7 @@ class App extends Component {
                         <ReactMic
                             record={record}
                             onStop={this.stopRecording}
-                            strokeColor={'#ffffff'}
+                            strokeColor={'#e0e1e2'}
                             backgroundColor={'white'}
                         />
                     </Grid.Row>

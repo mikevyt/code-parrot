@@ -23,7 +23,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         interpretedString = text;
         const codeConverter = new CodeConverter();
         codeConverter.parseKeywordsFromString(interpretedString, result => {
-            let sentence;
+            let sentence = '';
             if (result.intent == 'End') {
                 sentence = '\n';
             } else if (result.intent == 'MakeFunction') {
@@ -47,11 +47,12 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                     result.arg2
                 );
             } else if (result.intent == 'InitializeVariable') {
-                console.log(result);
-                sentence = translations.initializeVariable(
-                    result.name,
-                    result.value
-                );
+                if (result.name && result.value) {
+                    sentence = translations.initializeVariable(
+                        result.name,
+                        result.value
+                    );
+                }
             } else {
                 //intent == PrintText
                 sentence = translations.printSomething(result.sentence);
