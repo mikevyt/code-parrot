@@ -11,9 +11,9 @@ function initializeVariable(name, value){
 function initializeForLoop(x, iterations){
 
     if (typeof iterations == 'string'){
-        return ("'for " + x + " in " + iterations + "'");
+        return ("'for " + x + " in " + (iterations-1) + "'");
     }else{
-        return ("'for " + x + " in range (" + iterations + "): '");
+        return ("'for " + x + " in range (" + (iterations-1) + "): '");
     }
 }
 
@@ -25,11 +25,6 @@ function createIfStatement(x, condition, y){
     }else{
             return("'if " + x + " " + condition + " " + y + ":'");
     }
-}
-
-function createClass(name){
-    return ("'class " + name + ":'");
-
 }
 
 function createFunction(name, param1, param2){
