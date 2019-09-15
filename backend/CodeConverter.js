@@ -22,40 +22,42 @@ class CodeConverter {
         data.entities.forEach(entityObj => {
           switch (entityObj.type) {
             case "variable":
-              result.name = entityObj.entity;
+              result.name = entityObj.entity ? entityObj.entity : "";
               break;
             case "builtin.number":
-              result.value = entityObj.entity;
+              result.value = entityObj.entity ? entityObj.entity : "0";
               break;
           }
         });
         break;
       case "ForLoop":
-        result.iterations = data.entities[0].entity;
+        result.iterations = data.entities[0] ? data.entities[0].entity : "0";
         break;
       case "IfStatement":
         data.entities.forEach(entityObj => {
           switch (entityObj.type) {
             case "comparison":
-              if (entityObj.entity.includes("less than or equal")) {
-                result.condition = "<=";
-              } else if (entityObj.entity.includes("less than")) {
-                result.condition = "<";
-              } else if (entityObj.entity.includes("greater than or equal")) {
-                result.condition = ">=";
-              } else if (entityObj.entity.includes("greater than")) {
-                result.condition = ">";
-              } else if (entityObj.entity.includes("not equal") || entityObj.entity.includes("not same")) {
-                result.condition = "!=";
-              } else if (entityObj.entity.includes("equal") || entityObj.entity.includes("same")) {
-                result.condition = "==";
+              if (entityObj.entity) {
+                if (entityObj.entity.includes("less than or equal")) {
+                  result.condition = "<=";
+                } else if (entityObj.entity.includes("less than")) {
+                  result.condition = "<";
+                } else if (entityObj.entity.includes("greater than or equal")) {
+                  result.condition = ">=";
+                } else if (entityObj.entity.includes("greater than")) {
+                  result.condition = ">";
+                } else if (entityObj.entity.includes("not equal") || entityObj.entity.includes("not same")) {
+                  result.condition = "!=";
+                } else if (entityObj.entity.includes("equal") || entityObj.entity.includes("same")) {
+                  result.condition = "==";
+                }
               }
               break;
             case "firstVar":
-              result.x = entityObj.entity;
+              result.x = entityObj.entity ? entityObj.entity : "";
               break;
             case "secondVar":
-              result.y = entityObj.entity;
+              result.y = entityObj.entity ? entityObj.entity : "";
               break;
           }
         });
@@ -65,33 +67,33 @@ class CodeConverter {
         data.entities.forEach(entityObj => {
           switch (entityObj.type) {
             case "functionName":
-              result.name = entityObj.entity.replace(" ", "");
+              result.name = entityObj.entity ? entityObj.entity.replace(" ", "") : "";
               break;
             case "parameter":
               if (i == 0) {
-                result.param1 = entityObj.entity;
+                result.param1 = entityObj.entity ? entityObj.entity : "";
               } else {
-                result.param2 = entityObj.entity;
+                result.param2 = entityObj.entity ? entityObj.entity : "";
               }
               i++;
           }
         });
         break;
       case "PrintText":
-        result.sentence = data.entities[0].entity;
+        result.sentence = data.entities[0] ? data.entities[0].entity : "";
         break;
       case "CallFunction":
         let x = 0;
         data.entities.forEach(entityObj => {
           switch (entityObj.type) {
             case "functionName":
-              result.funcName = entityObj.entity.replace(" ", "");
+              result.funcName = entityObj.entity ? entityObj.entity.replace(" ", "") : "";
               break;
             case "parameter":
               if (x == 0) {
-                result.arg1 = entityObj.entity;
+                result.arg1 = entityObj.entity ? entityObj.entity : "";
               } else {
-                result.arg2 = entityObj.entity;
+                result.arg2 = entityObj.entity ? entityObj.entity : "";
               }
               x++;
               break;
