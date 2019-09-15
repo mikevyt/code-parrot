@@ -51,7 +51,6 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
     res.send(sentence);
 
-
 });
 
 app.listen(8000, () => {
