@@ -33,7 +33,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
                     result.param2
                 );
             } else if (result.intent == 'ForLoop') {
-                sentence = translations.initializeForLoop(result.interations);
+                sentence = translations.initializeForLoop(result.iterations);
             } else if (result.intent == 'IfStatement') {
                 sentence = translations.createIfStatement(
                     result.x,

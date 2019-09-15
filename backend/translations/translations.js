@@ -9,11 +9,7 @@ module.exports = {
   },
 
   initializeForLoop: function (iterations) {
-    if (typeof iterations == "string") {
-      return ("for i in " + (iterations - 1) + "\n");
-    } else {
-      return ("for i in range (" + (iterations - 1) + "): \n");
-    }
+      return ("for i in range (" + (iterations) + "): \n");
   },
 
   createIfStatement: function (x, condition, y) {
