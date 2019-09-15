@@ -1,38 +1,44 @@
 "use strict"
 
 const os = require("os");
-const TextAnalyticsAPIClient = require("azure-cognitiveservices-textanalytics");
+const request = require("request");
+const querystring = require("querystring");
 const CognitiveServicesCredentials = require("ms-rest-azure").CognitiveServicesCredentials;
+const LUISRuntimeClient = require("azure-cognitiveservices-luis-runtime");
 
-const apiKey = "ab7cf44c79ba4dfa9dc74bc82d7d2456";
+const apiKey = "236159b07b44416ea84ebe66bc973f1d";
 const credentials = new CognitiveServicesCredentials(apiKey);
-const client = new TextAnalyticsAPIClient(credentials, "https://westcentralus.api.cognitive.microsoft.com/")
+const client = new LUISRuntimeClient(credentials, "https://westus.api.cognitive.microsoft.com/luis/api/v2.0");
 
 class CodeConverter {
 
-  constructor() {}
+  constructor() { }
 
-  async getKeywords() {
-    const keyPhrasesInput = {
-      documents: [
-        {
-          language: "en",
-          id: "1",
-          text: "loop 25 times"
-        }
-      ]
+  async parseKeywordsFromString(query) {
+    const appId = "17491c7c-1e2f-4837-bef4-963de4295a18";
+    // object = {
+    //   intent,
+    //   name,
+    //   value,
+    //   x,
+    //   iterations,
+    //   ...
+    // }
+
+    const queryParams = {
+      "verbose": true,
+      "q": query,
+      "subscription-key": apiKey
     };
+    const luisRequest = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/" + appId + "?" + querystring.stringify(queryParams);
 
-    const keyPhraseResult = await client.keyPhrases({
-      multiLanguageBatchInput: keyPhrasesInput
-    });
-    const entitiesResult = await client.entities({
-      multiLanguageBatchInput: keyPhrasesInput
-    });
-
-    console.log(keyPhraseResult.documents);
-    console.log(entitiesResult.documents[0].entities);
-    console.log(os.EOL);
+    request(luisRequest, (err,response, body) => {
+        if (err) {
+          console.log(err);
+        } else {
+          const data = JSON.parse(body);
+        }
+      });
   }
 }
 
