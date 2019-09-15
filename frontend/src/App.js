@@ -14,10 +14,12 @@ class App extends Component {
         this.state = {
             record: false,
             audioBlob: null,
+            fileNum: 0
         }
 
         this.startRecording = this.startRecording.bind(this);
         this.stopRecording = this.stopRecording.bind(this);
+        this.sendData = this.sendData.bind(this);
     }
 
     startRecording () {
@@ -29,14 +31,15 @@ class App extends Component {
             record: false,
         });
         if (recordedBlob.blob) {
-            console.log(recordedBlob);
             this.sendData(recordedBlob);
         }
     }
 
     sendData(blob) {
+        const { fileNum } = this.state;
+        console.log(fileNum)
         var fd = new FormData();
-        fd.append('file', blob.blob, 'bitchass1.wav');
+        fd.append('file', blob.blob, `${fileNum}.wav`);
         console.log(fd);
 
         fetch('http://localhost:8000/upload', {
@@ -44,6 +47,7 @@ class App extends Component {
             method: "POST", body: fd
         }).then(response => {
             console.log(response);
+            this.setState({ fileNum: fileNum + 1})
         });
     }
 
